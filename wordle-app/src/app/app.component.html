@@ -1,1 +1,11 @@
 <h1>My Wordle</h1>
+
+<app-word *ngFor="let word of words" 
+            [letters]="word"></app-word>
+
+<br>
+<button (click)="resetCount()">Reset</button><br><br>
+
+<span>Word index: {{wordIndex}}</span><br>
+<span>Letter index: {{letterIndex}}</span><br>
+<span>Word : {{currentWord}}</span><br>
