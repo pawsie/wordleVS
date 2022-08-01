@@ -22,7 +22,6 @@ export class AppComponent {
     Array<string>(this.letterCount).fill(this.blank),
     Array<string>(this.letterCount).fill(this.blank),
     Array<string>(this.letterCount).fill(this.blank),
-    ['A', 'D', 'E', 'I', 'Z']
   ];
 
   @ViewChildren('appwords') components!:QueryList<WordComponent>;
@@ -48,7 +47,9 @@ export class AppComponent {
    
     }
     
-    if (this.letterIndex == this.letterCount && event.key == "Enter"){
+    if ((this.letterIndex == this.letterCount) && 
+      (this.wordIndex < this.wordCount) &&
+      (event.key == "Enter")){
       this.checkWord();
 
       this.components.toArray()[this.wordIndex].shake();
@@ -63,20 +64,17 @@ export class AppComponent {
   title = 'wordle-app';
   
   resetGame(){
-    this.resetCount();
+    this.resetIndices();
+    this.resetWords();
   }
 
-  resetCount(){
+  resetIndices(){
     this.wordIndex = 0;
     this.letterIndex = 0;
   }
   
   resetWords(){
-    this.words = [];
-    for(let i = 0; i < 5; i++){
-      this.words.concat(Array<string>(this.letterCount).fill(this.blank));
-    }
-    
+    this.words.forEach(w => w.fill(this.blank));    
   }
 
   checkWord(){
