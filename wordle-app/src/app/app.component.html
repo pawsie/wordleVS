@@ -1,8 +1,8 @@
 <h1>My Wordle</h1>
 
-<app-word *ngFor="let word of words" 
-            [letters]="word"></app-word>
-
+<div *ngFor="let word of words">
+    <app-word #appwords [letters]="word"></app-word>
+</div>
 <br>
 <button (click)="resetCount()">Reset</button><br><br>
 

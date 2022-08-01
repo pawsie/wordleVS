@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, QueryList, ViewChildren } from '@angular/core';
+import { WordComponent } from './word/word.component';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
   wordCount = 6;
   letterCount = 5;
   currentWord = '';
-  blank='['
+  blank='[';
   words = [
     Array<string>(this.letterCount).fill(this.blank),
     Array<string>(this.letterCount).fill(this.blank),
@@ -22,7 +23,9 @@ export class AppComponent {
     Array<string>(this.letterCount).fill(this.blank),
     Array<string>(this.letterCount).fill(this.blank),
     ['A', 'D', 'E', 'I', 'Z']
-  ]
+  ];
+
+  @ViewChildren('appwords') components!:QueryList<WordComponent>;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) { 
@@ -47,10 +50,13 @@ export class AppComponent {
     
     if (this.letterIndex == this.letterCount && event.key == "Enter"){
       this.checkWord();
+
+      this.components.toArray()[this.wordIndex].shake();
+
       this.wordIndex += 1;
       this.letterIndex = 0;
-    
-    }
+
+   }
 
   }
 
