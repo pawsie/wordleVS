@@ -16,27 +16,35 @@ export class LetterComponent implements OnInit {
   ngOnInit(): void {    
   }
 
-  getTextColor(){
-    if (this.letter.state == LetterStates.BeforeCheckNotBlank)
-      return 'black';
-    else
-      return 'white';    
-  }
+  getStyle(){
+    var textColor = 'white';
+    var backgroundColor = 'white';
+    var borderColor = 'gray';
 
-  getBackgroundColor(){
-    var color = 'white';
     switch (this.letter.state){
+      case LetterStates.BeforeCheckIsBlank:
+        backgroundColor = 'white';
+        borderColor = 'gray';
+        break;
+      case LetterStates.BeforeCheckNotBlank:
+        textColor = 'black';
+        backgroundColor = 'white';
+        borderColor = 'gray';
+        break;
       case LetterStates.RightLetterRightPlace:
-        color = '#6aaa64';
+        backgroundColor = '#6aaa64';
+        borderColor = '#6aaa64';
         break;
       case LetterStates.RightLetterWrongPlace:
-        color = '#c9b458';
+        backgroundColor = '#c9b458';
+        borderColor = '#c9b458';
         break;
       case LetterStates.WrongLetter:
-        color =  'gray';   
-        break;   
+        backgroundColor = 'gray';
+        borderColor = 'gray';
+        break;  
     }
-    return color;
+    
+    return {'color': textColor, 'background-color': backgroundColor, 'border-color': borderColor};
   }
-
 }
