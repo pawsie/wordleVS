@@ -1,5 +1,6 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
+import { Word } from './wordModel';
 
 @Component({
   selector: 'app-word',
@@ -24,7 +25,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class WordComponent implements OnInit {
 
-  @Input() letters!: string[];
+  @Input() word !: Word;
 
   ngOnInit(): void {    
   }

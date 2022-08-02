@@ -1,10 +1,12 @@
 import { Component, HostListener, QueryList, ViewChildren } from '@angular/core';
+import { LetterStates } from './letter/letterModel';
 import { WordComponent } from './word/word.component';
+import { Word } from './word/wordModel';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss']  
 })
 export class AppComponent {
 
@@ -15,14 +17,11 @@ export class AppComponent {
   letterCount = 5;
   currentWord = '';
   blank='[';
-  words = [
-    Array<string>(this.letterCount).fill(this.blank),
-    Array<string>(this.letterCount).fill(this.blank),
-    Array<string>(this.letterCount).fill(this.blank),
-    Array<string>(this.letterCount).fill(this.blank),
-    Array<string>(this.letterCount).fill(this.blank),
-    Array<string>(this.letterCount).fill(this.blank),
-  ];
+  words: Word[] = new Array(this.wordCount);
+
+  constructor(){
+    this.resetWords();
+  }
 
   @ViewChildren('appwords') components!:QueryList<WordComponent>;
 
@@ -34,15 +33,19 @@ export class AppComponent {
     if ((this.letterIndex >= 0 && this.letterIndex <= this.letterCount) && (event.key == "Backspace")){
     
       if (this.letterIndex > 0) this.letterIndex -= 1;
-      this.words[this.wordIndex][this.letterIndex] = this.blank;
+
+      this.words[this.wordIndex].letters[this.letterIndex].value = this.blank;
+      this.words[this.wordIndex].letters[this.letterIndex].state = LetterStates.BeforeCheckIsBlank;
       
     }
     else if (this.letterIndex <= this.letterCount - 1){
     
       // if a-z or A-Z
       if (event.keyCode >= 65 && event.keyCode <= 90){
-        this.words[this.wordIndex][this.letterIndex] = event.key.toUpperCase();
-        this.letterIndex += 1;
+        this.words[this.wordIndex].letters[this.letterIndex].value = event.key.toUpperCase();
+        this.words[this.wordIndex].letters[this.letterIndex].state = LetterStates.BeforeCheckNotBlank;
+
+        this.letterIndex += 1;        
       }
    
     }
@@ -53,6 +56,12 @@ export class AppComponent {
       this.checkWord();
 
       this.components.toArray()[this.wordIndex].shake();
+
+      this.words[this.wordIndex].letters[0].state = LetterStates.BeforeCheckIsBlank;
+      this.words[this.wordIndex].letters[1].state = LetterStates.BeforeCheckNotBlank;
+      this.words[this.wordIndex].letters[2].state = LetterStates.RightLetterRightPlace;
+      this.words[this.wordIndex].letters[3].state = LetterStates.RightLetterWrongPlace;
+      this.words[this.wordIndex].letters[4].state = LetterStates.WrongLetter;
 
       this.wordIndex += 1;
       this.letterIndex = 0;
@@ -74,11 +83,13 @@ export class AppComponent {
   }
   
   resetWords(){
-    this.words.forEach(w => w.fill(this.blank));    
+    for (var i = 0; i < this.wordCount; i++){
+      this.words[i] = new Word();
+    }
   }
 
   checkWord(){
-    this.currentWord = this.words[this.wordIndex].join('');
+    this.currentWord = this.words[this.wordIndex].letters.join('');
   }
 
 }
