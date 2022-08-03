@@ -1,5 +1,5 @@
 
-<div [@shake]="shakeTrigger" class="app-word">
+<div [@shake]="shakeTrigger" [@letterFlip]="flipTrigger" class="app-word">
 
     <span *ngFor="let letter of word.letters">
         <app-letter [letter]="letter"></app-letter>
