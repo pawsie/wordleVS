@@ -1,6 +1,5 @@
-import { animate, animateChild, group, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { LetterComponent } from '../letter/letter.component';
+import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnInit } from '@angular/core';
 import { Word } from './wordModel';
 
 const flipAnimation = [
@@ -35,15 +34,12 @@ const shakeAnimation = [
   styleUrls: ['./word.component.scss'],
   animations: [
     trigger('shake', [transition('true <=> false', shakeAnimation)]),
-    trigger('flip', [transition('true <=> false', flipAnimation)])
-    // trigger('flip', [transition('true <=> false', [query('.letter', flipAnimation, { optional: true })])])
+    trigger('flipLetters', [transition('true <=> false', [query('.app-letter', stagger('500ms', flipAnimation), { optional: true })])])
   ]
 })
 export class WordComponent implements OnInit {
 
   @Input() word !: Word;
-
-  @ViewChildren('appletter') letterComponents !: QueryList<LetterComponent>;
 
   ngOnInit(): void {    
   }
@@ -56,7 +52,6 @@ export class WordComponent implements OnInit {
   }
   flip() {
     this.flipTrigger = !this.flipTrigger;
-        // this.letterComponents.toArray()[0].flip();
   }
 
 }
