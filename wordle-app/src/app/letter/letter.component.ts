@@ -61,11 +61,14 @@ function getColors(letterState: LetterStates){
   animations: [
     // trigger('shake', [transition('true <=> false', shakeAnimation)]),
     trigger('flip', [
+        state(`${LetterStates.BeforeCheckIsBlank}`, style( getColors(LetterStates.BeforeCheckIsBlank))),
         state(`${LetterStates.BeforeCheckNotBlank}`, style( getColors(LetterStates.BeforeCheckNotBlank))),
         state(`${LetterStates.RightLetterRightPlace}`, style( getColors(LetterStates.RightLetterRightPlace))),
         state(`${LetterStates.RightLetterWrongPlace}`, style( getColors(LetterStates.RightLetterWrongPlace))),
         state(`${LetterStates.WrongLetter}`, style( getColors(LetterStates.WrongLetter))),
 
+        transition(`${LetterStates.BeforeCheckNotBlank} => ${LetterStates.BeforeCheckIsBlank}`, getFlipAnimation(LetterStates.BeforeCheckIsBlank)),
+        // transition(`${LetterStates.BeforeCheckNotBlank} => ${LetterStates.BeforeCheckNotBlank}`, getFlipAnimation(LetterStates.BeforeCheckNotBlank)),
         transition(`${LetterStates.BeforeCheckNotBlank} => ${LetterStates.RightLetterRightPlace}`, getFlipAnimation(LetterStates.RightLetterRightPlace)),
         transition(`${LetterStates.BeforeCheckNotBlank} => ${LetterStates.RightLetterWrongPlace}`, getFlipAnimation(LetterStates.RightLetterWrongPlace)),
         transition(`${LetterStates.BeforeCheckNotBlank} => ${LetterStates.WrongLetter}`, getFlipAnimation(LetterStates.WrongLetter)),        
