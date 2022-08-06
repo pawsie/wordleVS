@@ -1,4 +1,6 @@
 import { Component, HostListener, QueryList, ViewChildren } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { GET_ALL_WORDS } from './graphql/graphql.queries';
 import { LetterStates } from './letter/letterModel';
 import { WordComponent } from './word/word.component';
 import { Word } from './word/wordModel';
@@ -18,9 +20,17 @@ export class AppComponent {
   currentWord = '';
   blank='[';
   words: Word[] = new Array(this.wordCount);
+  allWords!: string[];
 
-  constructor(){
+  constructor(private apollo: Apollo) {
+
     this.resetWords();
+
+    this.apollo.watchQuery({ query: GET_ALL_WORDS }).valueChanges
+      .subscribe(({ data, error }: any) => {
+          this.allWords = data.allWords;   
+        } 
+      );
   }
 
   @ViewChildren('appword') wordComponents !: QueryList<WordComponent>;
